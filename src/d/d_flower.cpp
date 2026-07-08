@@ -14,8 +14,9 @@
 const u16 l_Txq_bessou_hanaTEX__width = 0x40;
 const u16 l_Txq_bessou_hanaTEX__height = 0x80;
 
-f32 l_pos3[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-f32 l_texCoord3[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+#include "assets/l_pos3__d_flower.h"
+#include "assets/l_color3__d_flower.h"
+#include "assets/l_texCoord3__d_flower.h"
 
 #include "assets/l_QbsafDL.h"
 #include "assets/l_QbsfwDL.h"
@@ -24,8 +25,9 @@ f32 l_texCoord3[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 const u16 l_Txo_ob_flower_white_64x64TEX__width = 0x40;
 const u16 l_Txo_ob_flower_white_64x64TEX__height = 0x40;
 
-f32 l_pos[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-f32 l_texCoord[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+#include "assets/l_pos__d_flower.h"
+#include "assets/l_color__d_flower.h"
+#include "assets/l_texCoord__d_flower.h"
 
 #include "assets/l_OhanaDL.h"
 #include "assets/l_Ohana_gutDL.h"
@@ -33,15 +35,11 @@ f32 l_texCoord[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 #include "assets/l_Txo_ob_flower_pink_64x64TEX.h"
 const u16 l_Txo_ob_flower_pink_64x64TEX__width = 0x40;
 const u16 l_Txo_ob_flower_pink_64x64TEX__height = 0x40;
-f32 l_pos2[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-GXColor l_color2[] = {
-    {0xCC, 0xCC, 0xCC, 0xFF},
-    {0x7F, 0x7F, 0x7F, 0xFF},
-    {0xB2, 0xB2, 0xB2, 0xFF},
-    {0xE5, 0xE5, 0xE5, 0xFF},
-    {0xFF, 0xFF, 0xFF, 0xFF},
-};
-f32 l_texCoord2[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+
+
+#include "assets/l_pos2__d_flower.h"
+#include "assets/l_color2__d_flower.h"
+#include "assets/l_texCoord2__d_flower.h"
 
 #include "assets/l_Ohana_highDL.h"
 #include "assets/l_Ohana_high_gutDL.h"
@@ -56,15 +54,6 @@ l_matDL__d_flower(l_Txo_ob_flower_white_64x64TEX)
 l_matDL2(l_Txo_ob_flower_pink_64x64TEX)
 
 static bool l_CutSoundFlag = false;
-
-GXColor l_color3[] = {
-    {0xFF, 0xFF, 0xFF, 0xFF},
-    {0x80, 0x80, 0x80, 0xFF},
-};
-static GXColor l_color[] = {
-    {0xFF, 0xFF, 0xFF, 0xFF},
-    {0xB2, 0xB2, 0xB2, 0xFF},
-};
 
 /* 800BFA9C-800BFD28       .text WorkCo__14dFlower_data_cFP10fopAc_ac_cUli */
 void dFlower_data_c::WorkCo(fopAc_ac_c* param_1, u32 param_2, int param_3) {
@@ -339,13 +328,13 @@ void dFlower_packet_c::draw() {
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-    GXSetArray(GX_VA_POS, l_pos, 0xC);
-    GXSetArray(GX_VA_CLR0, l_color, 0x4);
-    GXSetArray(GX_VA_TEX0, l_texCoord, 0x8);
+    GXSetArray(GX_VA_POS, l_pos, sizeof(l_pos[0]));
+    GXSetArray(GX_VA_CLR0, l_color, sizeof(l_color[0]));
+    GXSetArray(GX_VA_TEX0, l_texCoord, sizeof(l_texCoord[0]));
     GXCallDisplayList(l_matDL, 0xA0);
 
     dFlower_room_c* pRoom = &mRoom[0];
-    for(int i = 0; i < (s32)ARRAY_SIZE(mRoom); pRoom++, i++) {
+    for(int i = 0; i < ARRAY_SSIZE(mRoom); pRoom++, i++) {
         dKy_tevstr_c* tevstr = dComIfGp_roomControl_getTevStr(i);
         GXSetTevColorS10(GX_TEVREG0, tevstr->mColorC0);
         GXSetTevColor(GX_TEVREG1, tevstr->mColorK0);
@@ -368,13 +357,13 @@ void dFlower_packet_c::draw() {
         }
     }
 
-    GXSetArray(GX_VA_POS, field_0x4608, 0xC);
-    GXSetArray(GX_VA_CLR0, field_0x460c, 0x4);
-    GXSetArray(GX_VA_TEX0, field_0x4610, 0x8);
+    GXSetArray(GX_VA_POS, field_0x4608, sizeof(*field_0x4608));
+    GXSetArray(GX_VA_CLR0, field_0x460c, sizeof(*field_0x460c));
+    GXSetArray(GX_VA_TEX0, field_0x4610, sizeof(*field_0x4610));
     GXCallDisplayList(field_0x4614, field_0x4618);
 
     pRoom = &mRoom[0];
-    for(int i = 0; i < (s32)ARRAY_SIZE(mRoom); pRoom++, i++) {
+    for(int i = 0; i < ARRAY_SSIZE(mRoom); pRoom++, i++) {
         dKy_tevstr_c* tevstr = dComIfGp_roomControl_getTevStr(i);
         GXSetTevColorS10(GX_TEVREG0, tevstr->mColorC0);
         GXSetTevColor(GX_TEVREG1, tevstr->mColorK0);
@@ -453,7 +442,7 @@ static f32 checkGroundY(cXyz& pos) {
 /* 800C0D38-800C0EF4       .text update__16dFlower_packet_cFv */
 void dFlower_packet_c::update() {
     dFlower_anm_c* pAnm = getAnm();
-    for(int i = 0; i < (s32)ARRAY_SIZE(mAnm); pAnm++, i++) {
+    for(int i = 0; i < ARRAY_SSIZE(mAnm); pAnm++, i++) {
         mDoMtx_stack_c::YrotS(pAnm->field_0x02);
         mDoMtx_stack_c::XrotM(pAnm->field_0x04);
         mDoMtx_stack_c::YrotM(-pAnm->field_0x02);
@@ -463,7 +452,7 @@ void dFlower_packet_c::update() {
     dFlower_data_c* pData = getData();
     pAnm = getAnm();
     int j = 0;
-    for(int i = 0; i < (s32)ARRAY_SIZE(mData); i++, pData++) {
+    for(int i = 0; i < ARRAY_SSIZE(mData); i++, pData++) {
         if(cLib_checkBit<u8>(pData->field_0x00, 0x2)) {
             cLib_calcTimer(&pData->field_0x03);
 
@@ -552,7 +541,7 @@ dFlower_data_c* dFlower_packet_c::newData(s8 param_1, cXyz& param_2, int i_roomN
     JUT_ASSERT(VERSION_SELECT(2927, 2928, 2934, 2934), 0 <= i_roomNo && i_roomNo < 64);
 
     dFlower_data_c* pData = &mData[field_0x0010];
-    for(int i = field_0x0010; i < (s32)ARRAY_SIZE(mData); pData++, i++) {
+    for(int i = field_0x0010; i < ARRAY_SSIZE(mData); pData++, i++) {
         if(!cLib_checkBit<u8>(pData->field_0x00, 0x2)) {
             setData(pData, i, param_1, param_2, i_roomNo, param_4);
             return pData;

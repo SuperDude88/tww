@@ -1839,6 +1839,11 @@ config.custom_build_rules = [
         "command": "$python tools/converters/matDL_dis.py $in $out --symbol $symbol --scope $scope",
         "description": "CONVERT $symbol",
     },
+    {
+        "name": "convert_embedded_model_data", # why does it use this name when it literally has a command field
+        "command": "$python tools/converters/convert_embedded_model_data.py $in $out --type $type --symbol $symbol --scope $scope",
+        "description": "CONVERT $symbol",
+    },
 ]
 config.custom_build_steps = {}
 
@@ -1868,6 +1873,66 @@ def emit_build_rule(asset):
                         "scope": custom_data.get("scope", "local")
                     },
                     "implicit": Path("tools/converters/matDL_dis.py"),
+                }
+            )
+
+        case "VertexPosition":
+            steps.append(
+                {
+                    "rule": "convert_embedded_model_data",
+                    "inputs": out_dir / "bin" / asset["binary"],
+                    "outputs": out_dir / "include" / asset["header"],
+                    "variables": {
+                        "type": "pos3",
+                        "symbol": asset.get("rename") or asset["symbol"],
+                        "scope": custom_data.get("scope", "local")
+                    },
+                    "implicit": Path("tools/converters/convert_embedded_model_data.py"),
+                }
+            )
+
+        case "VertexNormal":
+            steps.append(
+                {
+                    "rule": "convert_embedded_model_data",
+                    "inputs": out_dir / "bin" / asset["binary"],
+                    "outputs": out_dir / "include" / asset["header"],
+                    "variables": {
+                        "type": "nrm3",
+                        "symbol": asset.get("rename") or asset["symbol"],
+                        "scope": custom_data.get("scope", "local")
+                    },
+                    "implicit": Path("tools/converters/convert_embedded_model_data.py"),
+                }
+            )
+
+        case "VertexTexCoord":
+            steps.append(
+                {
+                    "rule": "convert_embedded_model_data",
+                    "inputs": out_dir / "bin" / asset["binary"],
+                    "outputs": out_dir / "include" / asset["header"],
+                    "variables": {
+                        "type": "uv",
+                        "symbol": asset.get("rename") or asset["symbol"],
+                        "scope": custom_data.get("scope", "local")
+                    },
+                    "implicit": Path("tools/converters/convert_embedded_model_data.py"),
+                }
+            )
+
+        case "VertexColor":
+            steps.append(
+                {
+                    "rule": "convert_embedded_model_data",
+                    "inputs": out_dir / "bin" / asset["binary"],
+                    "outputs": out_dir / "include" / asset["header"],
+                    "variables": {
+                        "type": "rgba8",
+                        "symbol": asset.get("rename") or asset["symbol"],
+                        "scope": custom_data.get("scope", "local")
+                    },
+                    "implicit": Path("tools/converters/convert_embedded_model_data.py"),
                 }
             )
 
